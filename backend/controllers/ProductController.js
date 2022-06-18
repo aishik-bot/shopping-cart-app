@@ -1,14 +1,5 @@
 const Product = require('../models/product.js');
-
-const getProducts = async (req, res, next)=>{
-    const products = await Product.find();
-    
-    res.status(200).json({
-        success: true,
-        product_count: products.length,
-        products
-    })
-}
+const ApiFeatures = require('../utils/apiFeatures');
 
 const addProduct = async (req, res, next)=>{
     const product = await Product.create(req.body);
@@ -17,6 +8,21 @@ const addProduct = async (req, res, next)=>{
         product
     })
 }
+
+const getProducts = async (req, res, next)=>{
+    const apiFeatures = new ApiFeatures(Product.find(), req.query)
+                        .search()
+                        .filter();
+
+    const products = await apiFeatures.query;
+    
+    res.status(200).json({
+        success: true,
+        product_count: products.length,
+        products
+    })
+}
+
 
 const getSingleProduct = async (req, res, next)=>{
     const product = await Product.findById(req.params.id);
