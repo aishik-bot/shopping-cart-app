@@ -10,15 +10,20 @@ const addProduct = async (req, res, next)=>{
 }
 
 const getProducts = async (req, res, next)=>{
+    const resultsPerPage = 3;
+    const prodCount = await Product.countDocuments();
+
     const apiFeatures = new ApiFeatures(Product.find(), req.query)
                         .search()
-                        .filter();
+                        .filter()
+                        .pagination(resultsPerPage);
 
     const products = await apiFeatures.query;
     
     res.status(200).json({
         success: true,
-        product_count: products.length,
+        count: products.length,
+        prodCount,
         products
     })
 }
