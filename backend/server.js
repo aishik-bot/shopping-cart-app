@@ -1,9 +1,11 @@
 //importing dependencies
 require('dotenv').config({path:__dirname+'/.env'});
 const express = require('express');
+const app = express();
+
 const connectDb = require('./connectDb.js');
 const productRoutes = require('./routes/productRoutes.js');
-const app = express();
+const userRoutes = require('./routes/userRoutes');
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
@@ -11,7 +13,9 @@ app.use(express.urlencoded({extended:false}));
 const port = process.env.PORT || 4000;
 const databaseUrl = process.env.DATABASE_URL;
 
-app.use('/api/', productRoutes);
+app.use('/api', productRoutes);
+app.use('/api', userRoutes);
+
 //connecting to the database
 connectDb(databaseUrl);
 
