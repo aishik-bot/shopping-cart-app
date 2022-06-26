@@ -1,14 +1,18 @@
 //importing dependencies
 require('dotenv').config({path:__dirname+'/.env'});
 const express = require('express');
+const cookieParser = require('cookie-parser');
+const cors = require('cors')
 const app = express();
 
 const connectDb = require('./connectDb.js');
-const productRoutes = require('./routes/productRoutes.js');
+const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
+app.use(cors())
+app.use(cookieParser())
 //env variables
 const port = process.env.PORT || 4000;
 const databaseUrl = process.env.DATABASE_URL;
