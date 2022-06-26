@@ -1,5 +1,5 @@
-const sendToken = (user, statusCode, res)=>{
-    const token = user.getJwtToken();
+const sendToken = (user, statusCode, res, token)=>{
+    //const token = user.getJwtToken();
 
     //cookie options
     const options = {
@@ -16,4 +16,4 @@ const sendToken = (user, statusCode, res)=>{
     })
 }
 
-module.exports= sendToken
+module.exports = sendToken

@@ -38,11 +38,5 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.methods.getJwtToken = ()=>{
-    return jwt.sign({
-        name: this.name,
-        email: this.email
-    }, process.env.JWT_SECRET_KEY, {expiresIn: '1d'})
-}
 
 module.exports = mongoose.model('User', userSchema);

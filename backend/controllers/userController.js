@@ -1,6 +1,7 @@
 require('dotenv').config();
 const UserModel = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const sendToken = require('../utils/jwtToken');
 
 const userRegister = async (req, res)=>{
@@ -26,15 +27,15 @@ const userRegister = async (req, res)=>{
             address: address
         });
 
-        // const token = jwt.sign({
-        //     name: name,
-        //     email: email
-        //   },
-        //   process.env.JWT_SECRET_KEY,
-        //   {
-        //     expiresIn: '1d'
-        // }
-        // )
+        const token = jwt.sign({
+            name: name,
+            email: email
+          },
+          process.env.JWT_SECRET_KEY,
+          {
+            expiresIn: '1d'
+        }
+        )
 
         const document = newUSer.save();
         // res.status(200).json({
@@ -44,7 +45,7 @@ const userRegister = async (req, res)=>{
         //     token
         // })
 
-        sendToken(user, 200, res);
+        sendToken(user, 200, res, token);
     }
     else{
         res.status(400).json({
@@ -81,7 +82,16 @@ const userLogin = async (req, res)=>{
         );
     
         if (isPasswordValid){
-            sendToken(user, 200, res);
+            const token = jwt.sign({
+                name: user.name,
+                email: user.email
+              },
+              process.env.JWT_SECRET_KEY,
+              {
+                expiresIn: '1d'
+            }
+            )
+            sendToken(user, 200, res, token);
         } 
         else{
             res.status(400).json({ success: false, message: "Login unsuccessful" });
