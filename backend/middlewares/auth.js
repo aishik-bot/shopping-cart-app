@@ -8,7 +8,7 @@ const isAuthenticateUser = async (req, res, next)=>{
     if(!token){
         res.status(401).json({
             success: false,
-            message: "Login to access products"
+            message: "Login to access this route"
         })
     }
     else{

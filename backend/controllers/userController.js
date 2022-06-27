@@ -111,8 +111,42 @@ const userLogout = async (req, res)=>{
     })
 }
 
+const getUserProfile = async (req, res)=>{
+    const user = await UserModel.find({email: req.user.email}, {_id: 0, }); //exclude id and password of user
+    //console.log('from user controller '+req.user.email)
+
+    res.status(200).json({
+        success: true,
+        user
+    })
+}
+
+const updatePassword = async (req, res)=>{
+    const user = await UserModel.findOne({email: req.user.email});
+
+    const isMatched = await bcrypt.compare(req.body.oldpassword, user.password);
+    if(!isMatched){
+        res.status(400).json({
+            success: false,
+            message: "Incorrect old password"
+        })
+    }
+    else{
+        const salt = await bcrypt.genSalt(10);
+        const encryptedPassword = await bcrypt.hash(req.body.newpassword, salt);
+        user.password = encryptedPassword;
+        await user.save();
+        res.status(200).json({
+            success: true,
+            message: "Password updated successfully"
+        })
+    }
+}
+
 module.exports = {
     userRegister,
     userLogin,
-    userLogout
+    userLogout,
+    getUserProfile,
+    updatePassword
 }
