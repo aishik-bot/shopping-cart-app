@@ -164,6 +164,67 @@ const allUsers = async (req,res)=>{
         users
     })
 }
+
+const getUserDetails = async (req, res)=>{
+    const user=await UserModel.findById(req.params.id);
+    if(!user){
+        res.status(404).json({
+            success: false,
+            message: "User not found"
+        })
+    }
+    else{
+        res.status(200).json({
+            success: true,
+            user
+        })
+    }
+}
+
+const adminUpdateProfile = async (req, res)=>{
+    try {
+        const userNewData={
+            name:req.body.name,
+            email: req.body.email,
+            role: req.body.role
+        }
+        const user=await UserModel.findByIdAndUpdate(req.params.id, userNewData)
+        if(!user){
+            throw "User not found by the given id"
+        }
+        else{
+            res.status(200).json({
+                success:true,
+                message: "Updated changes"
+            })
+        }
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
+const adminDeleteUser = async (req, res)=>{
+    try {
+        const user = await UserModel.findById(req.params.id);
+        if(!user) throw "User not found by the given id"
+        else{
+            await user.remove();
+            res.status(200).json({
+                success: true,
+                message: "User deleted successfully"
+            })
+        }
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
 module.exports = {
     userRegister,
     userLogin,
@@ -171,5 +232,8 @@ module.exports = {
     getUserProfile,
     updatePassword,
     updateProfile,
-    allUsers
+    allUsers,
+    getUserDetails,
+    adminUpdateProfile,
+    adminDeleteUser
 }

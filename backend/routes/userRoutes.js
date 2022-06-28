@@ -7,7 +7,10 @@ const { userRegister,
     getUserProfile,
     updatePassword, 
     updateProfile,
-    allUsers} = require('../controllers/userController');
+    allUsers,
+    getUserDetails,
+    adminUpdateProfile,
+    adminDeleteUser} = require('../controllers/userController');
 const { isAuthenticateUser, authorizeRoles } = require('../middlewares/auth');
 
 router.post('/register', userRegister);
@@ -17,5 +20,9 @@ router.put('/current-user/update', isAuthenticateUser, updateProfile);
 router.get('/logout', userLogout);
 router.put('/password/update', isAuthenticateUser, updatePassword);
 router.get('/admin/users', isAuthenticateUser, authorizeRoles('admin'), allUsers);
+router.route('/admin/user/:id')
+        .get(isAuthenticateUser, authorizeRoles('admin'), getUserDetails)
+        .put(isAuthenticateUser, authorizeRoles('admin'), adminUpdateProfile)
+        .delete(isAuthenticateUser, authorizeRoles('admin'), adminDeleteUser)
 
 module.exports = router;
