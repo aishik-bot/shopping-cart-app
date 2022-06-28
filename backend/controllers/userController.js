@@ -143,10 +143,33 @@ const updatePassword = async (req, res)=>{
     }
 }
 
+const updateProfile = async (req, res)=>{
+    const updates = {
+        name: req.body.name,
+        email: req.body.email,
+        address: req.body.address
+    }
+    const user = await UserModel.findOneAndUpdate({email: req.user.email}, updates)
+
+    res.status(200).json({
+        success: true,
+        message: "profile updated"
+    })
+}
+
+const allUsers = async (req,res)=>{
+    const users=await UserModel.find();
+    res.status(200).json({
+        success: true,
+        users
+    })
+}
 module.exports = {
     userRegister,
     userLogin,
     userLogout,
     getUserProfile,
-    updatePassword
+    updatePassword,
+    updateProfile,
+    allUsers
 }
