@@ -6,8 +6,11 @@ const cors = require('cors')
 const app = express();
 
 const connectDb = require('./connectDb.js');
+
+//importing routes
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
@@ -19,6 +22,7 @@ const databaseUrl = process.env.DATABASE_URL;
 
 app.use('/api', productRoutes);
 app.use('/api', userRoutes);
+app.use('/api', orderRoutes);
 
 //connecting to the database
 connectDb(databaseUrl);

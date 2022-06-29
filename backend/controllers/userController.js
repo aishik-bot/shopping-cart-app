@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const sendToken = require('../utils/jwtToken');
 
 const userRegister = async (req, res)=>{
-    const {name, email, password, address} = req.body;
+    const {name, email, password} = req.body;
     console.log(req.body);
 
     const user = await UserModel.findOne({email:email});
@@ -16,7 +16,7 @@ const userRegister = async (req, res)=>{
             message: "User with that email already exists"
         })
     }
-    else if(name && email && password && address){
+    else if(name && email && password){
         const salt = await bcrypt.genSalt(10);
         const encryptedPassword = await bcrypt.hash(password, salt);
 
@@ -24,7 +24,6 @@ const userRegister = async (req, res)=>{
             name: name,
             email: email,
             password: encryptedPassword,
-            address: address
         });
 
         const token = jwt.sign({
@@ -112,7 +111,7 @@ const userLogout = async (req, res)=>{
 }
 
 const getUserProfile = async (req, res)=>{
-    const user = await UserModel.find({email: req.user.email}, {_id: 0, }); //exclude id and password of user
+    const user = await UserModel.find({email: req.user.email}, {_id: 0, password: 0}); //exclude id and password of user
     //console.log('from user controller '+req.user.email)
 
     res.status(200).json({
@@ -147,7 +146,6 @@ const updateProfile = async (req, res)=>{
     const updates = {
         name: req.body.name,
         email: req.body.email,
-        address: req.body.address
     }
     const user = await UserModel.findOneAndUpdate({email: req.user.email}, updates)
 
