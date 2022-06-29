@@ -90,6 +90,38 @@ const allOrders = async (req, res)=>{
     })
 }
 
+const updateOrder = async (req, res)=>{
+    try {
+        const order=await OrderModel.findById(req.params.id)
+        if(!order){
+            throw "No order found with that id"
+        }
+        if(order.orderStatus==='Delivered'){
+            throw "Order already delivered"
+        }
+        order.orderItems.forEach(async item =>{
+                await updateStock(item.product, item.quantity)
+        })
+        order.orderStatus=req.body.status,
+        order.deliveredAt = Date.now()
+        await order.save()
+        res.status(200).json({
+            success:true,
+            message: "order details updated"
+        })
+    } catch (error) {
+        res.json({
+            error
+        })
+    }
+}
+
+async function updateStock(id, quantity){
+    const product =await ProductModel.findById(id);
+    product.stock = product.stock - quantity;
+    await product.save({validateBeforeSave: false})
+}
+
 const deleteOrder = async (req, res)=>{
     try {
         const order = await OrderModel.findById(req.params.id);
@@ -116,5 +148,6 @@ module.exports = {
     getSingleOrder,
     myOrders,
     allOrders,
+    updateOrder,
     deleteOrder
 }
