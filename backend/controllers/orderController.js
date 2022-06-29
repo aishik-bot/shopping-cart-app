@@ -53,7 +53,68 @@ const getSingleOrder = async (req, res)=>{
 }
 
 
+const myOrders = async (req, res)=>{
+    try {
+        //console.log("req.user email: "+req.user.email);
+        const user = await UserModel.findOne({email: req.user.email});
+        //console.log({user})
+        const orders = await OrderModel.find({user: user._id});
+        if(!orders){ 
+            throw "No orders to show"
+        }
+        else{
+            res.status(200).json({
+                success : true,
+                orders
+            })
+        }
+    } catch (error) {
+        res.json({
+            success: false,
+            error
+        })
+    }
+}
+
+const allOrders = async (req, res)=>{
+    const orders = await OrderModel.find();
+
+    let totalAmount = 0
+    orders.forEach(order=>{
+        totalAmount += order.totalPrice 
+    })
+    res.status(200).json({
+        success: true,
+        totalAmount,
+        orders
+    })
+}
+
+const deleteOrder = async (req, res)=>{
+    try {
+        const order = await OrderModel.findById(req.params.id);
+        if(!order){
+            throw "No order found with that id"
+        }
+        else{
+            await order.remove()
+            res.status(200).json({
+                success : true,
+                message: "Order deleted"
+            })
+        }
+    } catch (error) {
+        res.json({
+            success: false,
+            error
+        })
+    }
+}
+
 module.exports = {
     newOrder,
-    getSingleOrder
+    getSingleOrder,
+    myOrders,
+    allOrders,
+    deleteOrder
 }
