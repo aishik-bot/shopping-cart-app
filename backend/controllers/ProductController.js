@@ -125,4 +125,20 @@ const createProductReview = async (req, res)=>{
     }
 }
 
-module.exports = { getProducts, addProduct, getSingleProduct, updateProduct, deleteProduct, createProductReview }
+const getProductReviews = async (req, res)=>{
+    try {
+        const product = await Product.findById(req.query.id) ;
+        
+        res.status(200).json({
+            success: true,
+            reviews: product.reviews
+        })
+    } catch (error) {
+        res.json({
+            message: "An Error occured",
+            error: error.message
+        })
+    }
+}
+
+module.exports = { getProducts, addProduct, getSingleProduct, updateProduct, deleteProduct, createProductReview, getProductReviews }
