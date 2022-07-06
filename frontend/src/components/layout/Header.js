@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {NavLink} from 'react-router-dom';
 import '../../App.css'
 
 //component for Navbar containing brand logo search bar login button and cart
@@ -11,7 +11,9 @@ function Header() {
             {/* brand with logo */}
             <div className="col-12 col-md-3">
                 <div className="navbar-brand">
-                    <img src="/ShopioLogo.png" width = "160" alt=""/>
+                    <NavLink to="/">
+                        <img src="/ShopioLogo.png" width = "160" alt=""/>
+                    </NavLink>
                 </div>
             </div>
 

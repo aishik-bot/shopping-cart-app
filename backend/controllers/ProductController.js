@@ -10,8 +10,8 @@ const addProduct = async (req, res)=>{
 }
 
 const getProducts = async (req, res)=>{
-    const resultsPerPage = 3;
-    const prodCount = await Product.countDocuments();
+    const resultsPerPage = 4;
+    const productsCount = await Product.countDocuments();
 
     const apiFeatures = new ApiFeatures(Product.find(), req.query)
                         .search()
@@ -20,28 +20,36 @@ const getProducts = async (req, res)=>{
 
     const products = await apiFeatures.query;
     
-    res.status(200).json({
-        success: true,
-        count: products.length,
-        prodCount,
-        products
-    })
+    setTimeout(() => {
+        res.status(200).json({
+            success: true,
+            resultsPerPage,
+            productsCount,
+            products
+        })
+    }, 2000);
 }
 
 
 const getSingleProduct = async (req, res)=>{
     const product = await Product.findById(req.params.id);
-
-    if(!product){
-        res.status(404).json({
-            success: false,
-            message: "Product not found"
-        })
-    }
-    else{
-        res.status(200).json({
-            success: true,
-            product
+    try {
+        if(!product){
+            res.status(404).json({
+                success: false,
+                message: "Product not found"
+            })
+        }
+        else{
+            res.status(200).json({
+                success: true,
+                product
+            })
+        }
+    } catch (error) {
+        res.json({
+            message: "Error occured",
+            error
         })
     }
 }
