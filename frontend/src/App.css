@@ -184,3 +184,17 @@ footer p{
   border: none;
   padding: 0.5rem 2rem;
 }
+
+/* Pagination */
+.page-item.active .page-link {
+  background-color: #e741fd;
+  border-color: #e741fd;
+}
+
+.page-link {
+  color: #e741fd;
+}
+
+.page-link:hover {
+  color: #e741fd;
+}

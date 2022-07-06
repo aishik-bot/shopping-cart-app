@@ -5,15 +5,19 @@ import Product from './products/Product';
 import Loader from './layout/Loader';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProducts } from '../actions/productActions';
+import { useParams } from 'react-router-dom';
 
 function Home() {
   const [currentPage , setCurrentPage ] = useState(1);
 
   const dispatch = useDispatch();
   const { loading, products, productsCount, resultsPerPage, error } = useSelector(state => state.products)
+  
+  const {keyword} = useParams();
+  
   useEffect(()=>{
-    dispatch(getProducts(currentPage))
-  }, [dispatch, currentPage, ])
+    dispatch(getProducts(keyword, currentPage))
+  }, [dispatch, currentPage, keyword])
 
 
   function setCurrentPageNo(pageNumber) {

@@ -9,13 +9,13 @@ import { ALL_PRODUCTS_FAIL,
     
 } from "../constants/productConstants";
 
-export const getProducts = (currentPage=1)=> async (dispatch) =>{
+export const getProducts = (keyword = '', currentPage = 1)=> async (dispatch) =>{
     try {
         dispatch({
             type: ALL_PRODUCTS_REQUEST,
         })
         //get product details from backend
-        const { data } = await axios.get(`http://localhost:8080/api/products?page=${currentPage}`)
+        const { data } = await axios.get(`http://localhost:8080/api/products?keyword=${keyword}&page=${currentPage}`)
 
         dispatch({
             type: ALL_PRODUCTS_SUCCESS,
