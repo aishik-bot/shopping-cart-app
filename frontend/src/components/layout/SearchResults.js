@@ -29,9 +29,9 @@ function SearchResults() {
         <div className="container-fluid">
           <h2 id="product-heading">{`Search Results for "${keyword}"`}</h2>
           <div className="row">
-            {products && products.map(product=>(
+              {products.length>0? products.map(product=>(
               <Product key={product.name} product={product}/>
-            ))}
+            )):<h2>No Results Found</h2>}
           </div>
 
           {/* Pagination */}

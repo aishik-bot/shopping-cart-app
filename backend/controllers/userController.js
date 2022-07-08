@@ -55,7 +55,8 @@ const userRegister = async (req, res)=>{
 }
 
 const userLogin = async (req, res)=>{
-    const { email , password } = req.body;
+    try {
+        const { email , password } = req.body;
 
     if(!email || !password){
         res.status(400).json({
@@ -95,6 +96,12 @@ const userLogin = async (req, res)=>{
         else{
             res.status(400).json({ success: false, message: "Login unsuccessful" });
         }
+    }
+    } catch (error) {
+        res.json({
+            message: "Error Occured",
+            error
+        })
     }
 }
 

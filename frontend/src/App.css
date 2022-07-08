@@ -19,13 +19,32 @@ nav {
   padding: 1rem 1rem;
 }
 
+.input-group {
+  width: 100%;
+  margin-right: 35%;
+}
+
+#search_field {
+  height: 2.4rem;
+  padding: 1rem;
+}
+
+#login_btn,
+#view_btn {
+  margin: 0.4rem;
+  background-color: #8623b4;
+  padding: 0.4rem 1.8rem;
+  font-family: 'Arima';
+  color: white
+}
+
 #cart {
   font-size: 1rem;
   color: black;
 }
 
 #cart_count {
-  background-color: #8623b4;
+  background-color: #aa4db6;
   margin: 1px;
   padding: 0.2rem 0.5rem;
   border-radius: 0.2rem;
@@ -187,7 +206,7 @@ footer p{
 
 /* Pagination */
 .page-item.active .page-link {
-  background-color: #e741fd;
+  background-color: #aa4db6;
   border-color: #e741fd;
 }
 
@@ -198,3 +217,34 @@ footer p{
 .page-link:hover {
   color: #e741fd;
 }
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+
+  font-weight: 700;
+}
+
+/* login & register */
+.wrapper form {
+  padding: 2.5rem 3rem;
+}
+
+.wrapper form .btn {
+  background-color: #aa4db6;
+  border-color: #aa4db6;
+  color: white;
+  margin-top: 2.5rem;
+}
+
+.wrapper form a {
+  font-size: 0.9rem;
+  color: grey;
+}
+
+.wrapper .form-group{
+  margin-top: 0.8rem;
+}
+
