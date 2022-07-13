@@ -1,15 +1,19 @@
-const express = require('express');
+const express = require("express");
+const {
+  addOrderItem,
+  getOrderById,
+  updateOrderToPaid,
+  getMyOrders,
+} = require("../controllers/orderController");
+const { isAuthenticateUser, authorizeRoles } = require('../middlewares/auth');
 const router = express.Router();
 
-const { newOrder, getSingleOrder, myOrders, allOrders, deleteOrder, updateOrder } = require('../controllers/orderController');
-const { isAuthenticateUser, authorizeRoles } = require('../middlewares/auth');
-
-router.post('/order/new',isAuthenticateUser, newOrder);
-router.get('/order/me', isAuthenticateUser, myOrders);
-router.get('/order/:id', isAuthenticateUser, getSingleOrder);
-router.get('/admin/order/all', isAuthenticateUser, authorizeRoles('admin'), allOrders);
-router.route('/admin/order/:id')
-        .put(isAuthenticateUser, authorizeRoles('admin'), updateOrder)
-        .delete(isAuthenticateUser, authorizeRoles('admin'), deleteOrder)
-
+//getUserOrder
+router.route("/myorders").get(isAuthenticateUser, getMyOrders);
+//get order by id
+router.route("/:id").get(isAuthenticateUser, getOrderById);
+//craete new order
+router.route("/order").post(isAuthenticateUser, addOrderItem);
+//update order
+router.route("/:id/pay").put(isAuthenticateUser,authorizeRoles('admin'), updateOrderToPaid);
 module.exports = router;

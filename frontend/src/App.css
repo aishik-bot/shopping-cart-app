@@ -4,6 +4,7 @@ body{
   min-height: 100vh;
   margin: 0px;
   padding: 0px;
+  padding-bottom: 2.5rem;
   overflow-x: hidden;
   position: relative;
 }
@@ -55,18 +56,20 @@ nav {
 
 footer{
   position: absolute;
+  margin-top: 8rem;
   bottom: 0;
-  height: 50px;
+  /* height: 50px; */
   width: 100%;
   background-color: #d4d5d6; 
 }
 
 footer p{
+  padding-top: 0.8rem;
   color: purple;
 }
 
 .carousel-item{
-  height: 70vh;
+  height: 80vh;
 }
 
 .carousel-item>img{
@@ -86,6 +89,7 @@ footer p{
   margin-left: auto;
   margin-right: auto;
   margin-top: 20%;
+  margin-bottom: 15%;
   width: 80px;
   height: 80px;
   padding-left: 0;
@@ -237,6 +241,8 @@ footer p{
   border-color: #aa4db6;
   color: white;
   margin-top: 2.5rem;
+  margin-right: 2.5rem;
+
 }
 
 .wrapper form a {
@@ -248,3 +254,27 @@ footer p{
   margin-top: 0.8rem;
 }
 
+#dropdownMenuButton{
+  background-color: #aa4db6;
+  margin: 10px;
+}
+
+.avatar {
+  display: inline-block;
+  margin-bottom: 0;
+  height: 30rem;
+  width: 30rem;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rounded-circle {
+  border-radius: 50% !important;
+}

@@ -17,15 +17,15 @@ function Search() {
     }
 
   return (
-    <form onSubmit={searchHandler}>
+    <form onSubmit={searchHandler} id="search-form">
       {/* Search-box */}
-      <div className="col-12 col-md-6 mt-2 mt-md-0">
+        
             <div className="input-group">
                 <input
                     type="text"
                     id="search_field"
                     className="form-control"
-                    placeholder="Search for products, categories ..."
+                    placeholder="Search for products"
                     onChange={(e)=>setKeyword(e.target.value)}
                 />
                 <div className="input-group-append">
@@ -35,7 +35,7 @@ function Search() {
                     </button>
                 </div>
             </div>
-        </div>
+        
     </form>
   )
 }

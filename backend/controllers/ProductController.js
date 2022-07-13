@@ -2,15 +2,21 @@ const Product = require('../models/product.js');
 const ApiFeatures = require('../utils/apiFeatures');
 
 const addProduct = async (req, res)=>{
-    const product = await Product.create(req.body);
-    res.status(201).json({
+    try {
+        const product = await Product.create(req.body);
+        res.status(201).json({
         success:true,
         product
     })
+    } catch (error) {
+        res.json({
+            message: error.message
+        })
+    }
 }
 
 const getProducts = async (req, res)=>{
-    const resultsPerPage = 4;
+    const resultsPerPage = 8;
     const productsCount = await Product.countDocuments();
 
     const apiFeatures = new ApiFeatures(Product.find(), req.query)
@@ -52,6 +58,15 @@ const getSingleProduct = async (req, res)=>{
             error
         })
     }
+}
+
+const getAdminProducts = async (req, res)=>{
+    const products = await Product.find();
+
+    res.status(200).json({
+        success: true,
+        products
+    })
 }
 
 const updateProduct = async (req, res)=>{
@@ -149,4 +164,4 @@ const getProductReviews = async (req, res)=>{
     }
 }
 
-module.exports = { getProducts, addProduct, getSingleProduct, updateProduct, deleteProduct, createProductReview, getProductReviews }
+module.exports = { getProducts, addProduct, getSingleProduct, getAdminProducts ,updateProduct, deleteProduct, createProductReview, getProductReviews }

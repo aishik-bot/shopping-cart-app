@@ -9,7 +9,6 @@ const productSchema = new mongoose.Schema({
         {
             public_id: {
                 type: String,
-                required: true
             },
             url:{
                 type: String,
@@ -48,13 +47,13 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    reviews: [
-        {
-            name:{type:String, required: true},
-            rating:{type:Number, required: true},
-            comment:{type:String, required: true}
-        }
-    ],
+    // reviews: [
+    //     {
+    //         name:{type:String, required: true},
+    //         rating:{type:Number, required: true},
+    //         comment:{type:String, required: true}
+    //     }
+    // ],
     createdAt:{
         type:Date,
         default: Date.now

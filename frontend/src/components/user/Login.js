@@ -52,7 +52,7 @@ function Login() {
     }
 
     if(error){
-      alert(error);
+      console.log(error);
       dispatch(clearErrors);
     }
   }, [dispatch, isAuthenticated, error, navigate]);

@@ -5,7 +5,8 @@ const jwt = require('jsonwebtoken');
 const sendToken = require('../utils/jwtToken');
 
 const userRegister = async (req, res)=>{
-    const {name, email, password} = req.body;
+    try {
+        const {name, email, password} = req.body;
     console.log(req.body);
 
     const user = await UserModel.findOne({email:email});
@@ -20,7 +21,7 @@ const userRegister = async (req, res)=>{
         const salt = await bcrypt.genSalt(10);
         const encryptedPassword = await bcrypt.hash(password, salt);
 
-        const newUSer = new UserModel({
+        const newUser = new UserModel({
             name: name,
             email: email,
             password: encryptedPassword,
@@ -36,7 +37,7 @@ const userRegister = async (req, res)=>{
         }
         )
 
-        const document = newUSer.save();
+        const document = newUser.save();
         // res.status(200).json({
         //     success: true,
         //     message: "User is registered",
@@ -44,7 +45,7 @@ const userRegister = async (req, res)=>{
         //     token
         // })
 
-        sendToken(user, 200, res, token);
+        sendToken(newUser, 200, res, token);
     }
     else{
         res.status(400).json({
@@ -52,6 +53,13 @@ const userRegister = async (req, res)=>{
             message: "All fields are required"
         })
     }
+    } catch (error) {
+        res.json({
+            message: "Error Occured in registration",
+            error
+        })
+    }
+    
 }
 
 const userLogin = async (req, res)=>{
@@ -106,15 +114,21 @@ const userLogin = async (req, res)=>{
 }
 
 const userLogout = async (req, res)=>{
-    res.cookie('token', null, {
-        expires: new Date(Date.now()),
-        httpOnly: true
-    })
-
-    res.status(200).json({
-        success: true,
-        message: 'logged out successfully'
-    })
+    try {
+        res.cookie('token', null, {
+            expires: new Date(Date.now()),
+            httpOnly: true
+        })
+    
+        res.status(200).json({
+            success: true,
+            message: 'logged out successfully'
+        })
+    } catch (error) {
+        res.json({
+            message: error.message
+        })
+    }
 }
 
 const getUserProfile = async (req, res)=>{
@@ -150,16 +164,23 @@ const updatePassword = async (req, res)=>{
 }
 
 const updateProfile = async (req, res)=>{
-    const updates = {
-        name: req.body.name,
-        email: req.body.email,
+    try {
+        const updates = {
+            name: req.body.name,
+            email: req.body.email,
+        }
+        const user = await UserModel.findOneAndUpdate({email: req.user.email}, updates)
+    
+        res.status(200).json({
+            success: true,
+            message: "profile updated"
+        })
+    } catch (error) {
+        res.json({
+            message: "Error occured!",
+            error
+        })
     }
-    const user = await UserModel.findOneAndUpdate({email: req.user.email}, updates)
-
-    res.status(200).json({
-        success: true,
-        message: "profile updated"
-    })
 }
 
 const allUsers = async (req,res)=>{

@@ -8,6 +8,11 @@ import { LOGIN_REQUEST,
     LOAD_USER_REQUEST,
     LOAD_USER_SUCCESS,
     LOAD_USER_FAIL,
+    UPDATE_PROFILE_REQUEST,
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_PROFILE_FAIL,
+    LOGOUT_SUCCESS,
+    LOGOUT_FAIL,
     CLEAR_ERROR } from "../constants/userConstants";
 
 // User login
@@ -54,7 +59,7 @@ export const register = (name, email, password)=> async(dispatch)=>{
     } catch (error) {
         dispatch({
             type: REGISTER_USER_FAIL,
-            payload: error.response
+            payload: error.response.data.message
         })
     }
 }
@@ -75,6 +80,56 @@ export const loadUser = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: LOAD_USER_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+// Update profile
+export const updateProfile = (name, email) => async (dispatch) => {
+    try {
+
+        dispatch({ type: UPDATE_PROFILE_REQUEST })
+
+        const userData = {
+            name : name,
+            email: email
+        }
+
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+
+        const { data } = await axios.put('http://localhost:8080/api/current-user/update', userData, config);
+        console.log({data});
+        dispatch({
+            type: UPDATE_PROFILE_SUCCESS,
+            payload: data.success
+        })
+
+    } catch (error) {
+        dispatch({
+            type: UPDATE_PROFILE_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+// Logout user
+export const logout = () => async (dispatch) => {
+    try {
+
+        await axios.get('http://localhost:8080/api/logout')
+
+        dispatch({
+            type: LOGOUT_SUCCESS,
+        })
+
+    } catch (error) {
+        dispatch({
+            type: LOGOUT_FAIL,
             payload: error.response.data.message
         })
     }

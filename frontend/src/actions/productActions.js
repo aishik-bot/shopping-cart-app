@@ -5,7 +5,11 @@ import { ALL_PRODUCTS_FAIL,
     CLEAR_ERROR,
     PRODUCT_DETAILS_REQUEST,
     PRODUCT_DETAILS_SUCCESS,
-    PRODUCT_DETAILS_FAIL
+    PRODUCT_DETAILS_FAIL,
+    NEW_PRODUCT_REQUEST,
+    NEW_PRODUCT_SUCCESS,
+    NEW_PRODUCT_RESET,
+    NEW_PRODUCT_FAIL,
     
 } from "../constants/productConstants";
 
@@ -47,6 +51,25 @@ export const getProductDetails = (id)=> async (dispatch) =>{
         dispatch({
             type: PRODUCT_DETAILS_FAIL,
             payload: error.message
+        })
+    }
+}
+
+//add new Product
+export const newProduct = (productData) => async (dispatch) =>{
+    try {
+        dispatch({ type: NEW_PRODUCT_REQUEST });
+
+        const {data} = await axios.post('http://localhost:8080/api/admin/product/new', productData);
+
+        dispatch({
+            type: NEW_PRODUCT_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        dispatch({
+            type: NEW_PRODUCT_FAIL,
+            payload: error.response.data.message
         })
     }
 }

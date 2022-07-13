@@ -8,7 +8,13 @@ import {
     LOAD_USER_REQUEST,
     LOAD_USER_SUCCESS,
     LOAD_USER_FAIL,
-    CLEAR_ERROR
+    LOGOUT_SUCCESS,
+    LOGOUT_FAIL,
+    CLEAR_ERROR,
+    UPDATE_PROFILE_REQUEST,
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_PROFILE_RESET,
+    UPDATE_PROFILE_FAIL
 } from '../constants/userConstants'
 
 export const authReducer = (state = {user : {}}, action)=>{
@@ -29,7 +35,14 @@ export const authReducer = (state = {user : {}}, action)=>{
                 loading: false,
                 isAuthenticated: true,
                 user: action.payload
-            }    
+            }
+        
+        case LOGOUT_SUCCESS:
+            return {
+                loading: false,
+                isAuthenticated: false,
+                user: null
+            }
 
         case LOGIN_FAIL:
         case REGISTER_USER_FAIL:
@@ -49,13 +62,58 @@ export const authReducer = (state = {user : {}}, action)=>{
                 error: action.payload
             }
 
+
+        case LOGOUT_FAIL:
+            return {
+                ...state,
+                error: action.payload
+            }
+
         case CLEAR_ERROR:
             return{
                 ...state,
-                user: null
             }
 
         default:
             return state
+    }
+}
+
+export const userReducer = (state = {}, action) => {
+    switch (action.type){
+        case UPDATE_PROFILE_REQUEST:
+            return{
+                ...state,
+                loading: true
+            }
+        
+        case UPDATE_PROFILE_SUCCESS:
+            return{
+                ...state,
+                loading: false,
+                isUpdated: action.payload
+            }
+
+        case UPDATE_PROFILE_RESET: 
+            return{
+                ...state,
+                isUpdated: false
+            }
+
+        case UPDATE_PROFILE_FAIL:
+            return{
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
+        case CLEAR_ERROR:
+            return {
+                ...state,
+                error: null
+            }
+
+        default:
+            return state;
     }
 }

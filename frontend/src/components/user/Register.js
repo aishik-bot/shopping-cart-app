@@ -27,7 +27,7 @@ function Register() {
         }
 
         if (error) {
-            alert(error);
+            // alert(error);
             dispatch(clearErrors());
         }
     },[dispatch, isAuthenticated, navigate, error]);
